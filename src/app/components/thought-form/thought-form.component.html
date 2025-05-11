@@ -1,0 +1,5 @@
+<form [formGroup]="form" (ngSubmit)="submitThought()" class="form">
+    <input type="text" formControlName="title" placeholder="Title" />
+    <textarea formControlName="content" placeholder="What's on your mind?"></textarea>
+    <button type="submit" [disabled]="form.invalid">Add Thought</button>
+</form>
