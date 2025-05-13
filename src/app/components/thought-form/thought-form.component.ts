@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Thought, ThoughtService } from '../../services/thought.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-thought-form',
@@ -9,11 +11,16 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 })
 
 export class ThoughtFormComponent {
-  @Output() newThought = new EventEmitter<{ title: string; content: string; date: string }>();
+  newThought: Thought = {
+    title: '',
+    content: '',
+    date: new Date().toISOString(),
+    id: '',
+  };
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private thoughtService: ThoughtService) {
     this.form = this.fb.group({
       title: ['', Validators.required],
       content: ['', Validators.required]
@@ -22,11 +29,16 @@ export class ThoughtFormComponent {
 
   submitThought() {
     if (this.form.valid) {
-      this.newThought.emit({
+
+      this.newThought = {
+        id: uuidv4(),
         ...this.form.value,
         date: new Date().toISOString().split('T')[0]
-      });
+      };
+
+      this.thoughtService.addThought(this.newThought)
       this.form.reset();
+      this.newThought = { title: '', content: '', date: '', id: '' };
     }
   }
 }

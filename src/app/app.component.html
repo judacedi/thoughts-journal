@@ -1,12 +1,7 @@
 <main class="container">
   <h1>Julio's Thoughts Journal</h1>
 
-  <app-thought-form (newThought)="addThought($event)"></app-thought-form>
+  <app-thought-form ></app-thought-form>
 
-  <app-thought 
-    *ngFor="let thought of thoughts"
-    [title]="thought.title"
-    [content]="thought.content"
-    [date]="thought.date"
-  ></app-thought>
+  <app-thought-list></app-thought-list>
 </main>
