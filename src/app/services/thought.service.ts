@@ -21,28 +21,67 @@ export class ThoughtService {
 
   constructor() {
     effect(() => {
-      const current = this.thoughtsSignal();
-      localStorage.setItem(this.storageKey, JSON.stringify(current));
+      try {
+        const current = this.thoughtsSignal();
+        localStorage.setItem(this.storageKey, JSON.stringify(current));
+      } catch (e) {
+        console.error("Error saving thoughts to localStorage", e);
+      }
     });
   }
 
-  addThought(thought: Thought) {
-    this.thoughtsSignal.update((prev) => [thought, ...prev])
+  // Expects only title and content, generates id and date internally
+  addThought(newThoughtData: { title: string; content: string }) {
+    const thought: Thought = {
+      id: uuidv4(),
+      title: newThoughtData.title,
+      content: newThoughtData.content,
+      date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+    };
+    this.thoughtsSignal.update((prev) => [thought, ...prev]);
   }
 
   removeThought(id: string) {
+    if (window.confirm("Are you sure you want to delete this thought?")) {
+      this.thoughtsSignal.update(thoughts =>
+        thoughts.filter(thought => thought.id !== id) 
+      );
+      console.log(`The item with the id ${id} has been removed`);
+    }
+  }
+
+  updateThought(updatedThought: Thought) {
     this.thoughtsSignal.update(thoughts =>
-      thoughts.filter(thought => thought.id !== id) 
+      thoughts.map(thought =>
+        thought.id === updatedThought.id ? updatedThought : thought
+      )
     );
-    console.log(`The item with the id ${id} has been removed`)
-}
+    console.log(`The item with the id ${updatedThought.id} has been updated`);
+  }
 
   clearThoughts() {
-    this.thoughtsSignal.set([]);
+    if (window.confirm("Are you sure you want to delete ALL thoughts? This cannot be undone.")) {
+      this.thoughtsSignal.set([]);
+      console.log("All thoughts have been cleared.");
+    }
+  }
+
+  getThoughtById(id: string): Thought | undefined {
+    return this.thoughtsSignal().find(thought => thought.id === id);
   }
 
   private getThoughts(): Thought[] { 
     const raw = localStorage.getItem(this.storageKey);
-    return raw ? JSON.parse(raw) : [];
+    if (raw) {
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        console.error("Error parsing thoughts from localStorage", e);
+        // Optionally, clear the corrupted item:
+        // localStorage.removeItem(this.storageKey);
+        return [];
+      }
+    }
+    return [];
   }
 }

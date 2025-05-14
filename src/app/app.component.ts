@@ -1,20 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ThoughtComponent } from './components/thought/thought.component';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThoughtFormComponent } from './components/thought-form/thought-form.component';
-import { Thought, ThoughtService } from './services/thought.service';
+import { Thought } from './services/thought.service';
 import { ThoughtListComponent } from "./components/thought-list/thought-list.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, ThoughtFormComponent, ThoughtListComponent],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent{
+export class AppComponent {
+  // currentThoughtToEdit: Thought | null = null;
 
   constructor() {}
 
+  // onEditThoughtRequested(thought: Thought) {
+  //   this.currentThoughtToEdit = thought;
+  //   // Optionally, scroll to the form or give focus
+  //   // window.scrollTo({ top: 0, behavior: 'smooth' }); 
+  // }
 
+  // handleEditFinished() {
+  //   this.currentThoughtToEdit = null;
+  // }
 }

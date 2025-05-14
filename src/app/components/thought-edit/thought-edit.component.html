@@ -1,0 +1,8 @@
+<form [formGroup]="editForm" (ngSubmit)="saveThought()" class="form">
+    <input type="text" formControlName="title" placeholder="Title" />
+    <textarea formControlName="content" placeholder="What's on your mind?"></textarea>
+    <div class="buttons-container"  >
+        <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+        <button type="submit" class ="save-btn" [disabled]="editForm.invalid">Save Thought</button>
+    </div>
+</form>

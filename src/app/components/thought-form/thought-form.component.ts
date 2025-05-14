@@ -1,22 +1,14 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Thought, ThoughtService } from '../../services/thought.service';
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-thought-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule], 
   templateUrl: './thought-form.component.html',
-  styleUrl: './thought-form.component.css'
+  styleUrls: ['./thought-form.component.css']
 })
-
 export class ThoughtFormComponent {
-  newThought: Thought = {
-    title: '',
-    content: '',
-    date: new Date().toISOString(),
-    id: '',
-  };
 
   form: FormGroup;
 
@@ -29,16 +21,8 @@ export class ThoughtFormComponent {
 
   submitThought() {
     if (this.form.valid) {
-
-      this.newThought = {
-        id: uuidv4(),
-        ...this.form.value,
-        date: new Date().toISOString().split('T')[0]
-      };
-
-      this.thoughtService.addThought(this.newThought)
+      this.thoughtService.addThought(this.form.value);
       this.form.reset();
-      this.newThought = { title: '', content: '', date: '', id: '' };
     }
   }
 }
