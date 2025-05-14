@@ -1,1 +1,89 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --gbc-bg-main: #c4cfa1; /* GBC greenish-grey background */
+  --gbc-bg-input: #e0e0e0; /* Lighter grey for input fields */
+  --gbc-text: #343434;    /* Dark grey text */
+  --gbc-border: #584A58;  /* Dark purple-grey for borders */
+  --gbc-accent: #70A09D;  /* Muted teal/blue for buttons */
+  --gbc-window-border: #000000; /* Black for main container borders */
+  --gbc-pastel-red: #FF8A80; /* Pastel red for destructive actions */
+  --gbc-neutral: #584A58; /* Dark purple-grey for neutral actions */
+
+  --font-pixel: 'Press Start 2P', cursive;
+}
+
+body {
+  font-family: var(--font-pixel);
+  background-color: var(--gbc-bg-main);
+  color: var(--gbc-text);
+  margin: 0;
+  padding: 20px; /* Add some padding around the content */
+  image-rendering: pixelated; /* Helps keep pixel art crisp if images were used */
+  font-smooth: never; /* Attempt to disable anti-aliasing */
+  -webkit-font-smoothing: none; /* Attempt to disable anti-aliasing for Webkit */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Basic reset for some elements to better apply pixel style */
+button, input, textarea {
+  font-family: var(--font-pixel);
+  border: 2px solid var(--gbc-border);
+  background-color: var(--gbc-bg-input);
+  color: var(--gbc-text);
+  padding: 8px;
+  outline: none; /* Remove default focus outline if we add our own */
+}
+
+button {
+  background-color: var(--gbc-accent);
+  color: var(--gbc-bg-input); /* Light text on accent buttons */
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 2px solid var(--gbc-border);
+}
+
+button:hover {
+  filter: brightness(110%);
+}
+
+button:active {
+  filter: brightness(90%);
+  position: relative; /* Slight button press effect */
+  top: 1px;
+  left: 1px;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #888; /* Adjust placeholder color if needed */
+  opacity: 0.7;
+}
+
+/* Remove resize handle from textarea or style it if possible */
+textarea {
+  resize: none;
+}
+
+/* Style scrollbars for a more retro feel (webkit only) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gbc-bg-input);
+  border-left: 2px solid var(--gbc-border);
+  border-right: 2px solid var(--gbc-border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gbc-border);
+  border: 2px solid var(--gbc-bg-input); /* Create an inset effect */
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--gbc-bg-main);
+}

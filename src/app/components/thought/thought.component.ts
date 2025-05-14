@@ -1,10 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ThoughtService } from '../../services/thought.service';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-thought',
-  imports: [],
+  standalone: true,
+  imports: [
+    DatePipe
+  ],
   templateUrl: './thought.component.html',
   styleUrls: ['./thought.component.css']
 })

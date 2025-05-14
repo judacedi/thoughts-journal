@@ -1,25 +1,42 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-  input, textarea {
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
-  .buttons-container {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: space-between;
-  }
-  button { 
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-  }
-  .save-btn {
-    align-self: flex-end;
-  }
-  .cancel-btn {
-    align-self: flex-end;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Spacing between form elements */
+  padding: 10px;
+  border: 2px solid var(--gbc-border);
+  background-color: var(--gbc-bg-main);
+  margin-bottom: 20px; /* Space below the form */
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  /* Global styles apply font, border, bg-color, padding */
+}
+
+textarea {
+  min-height: 120px; /* Or a suitable height for editing */
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between; /* Puts Cancel on left, Save on right */
+  gap: 10px; /* Space between buttons */
+  margin-top: 10px; /* Space above the button container */
+}
+
+/* Buttons themselves are styled globally */
+/* .cancel-btn and .save-btn can be used for specific overrides if needed,
+   but the global button style should be sufficient for now. */
+
+.cancel-btn {
+  background-color: var(--gbc-neutral);
+  color: var(--gbc-bg-input); /* Dark text for contrast */
+  border-color: var(--gbc-border);
+}
+
+.save-btn {
+  background-color: var(--gbc-accent); /* Standard accent for save */
+  color: var(--gbc-bg-input);
+  border-color: var(--gbc-border);
+}

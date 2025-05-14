@@ -1,15 +1,36 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-  input, textarea {
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
-  button {
-    align-self: flex-end;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Spacing between form elements */
+  margin-bottom: 20px; /* Space below the form */
+  padding: 10px;
+  border: 2px solid var(--gbc-border);
+  background-color: var(--gbc-bg-main); /* Or a slightly different shade if desired */
+}
+
+input[type="text"],
+textarea {
+  /* Global styles already apply font, border, bg-color, padding */
+  /* We can add specific widths or heights if needed */
+  width: 100%;
+}
+
+textarea {
+  min-height: 80px; /* Adjust as needed */
+}
+
+button[type="submit"] {
+  /* Global styles apply font, border, bg-color, padding, cursor */
+  align-self: flex-end; /* Align button to the right */
+  min-width: 120px; /* Ensure button has a decent width */
+}
+
+/* Styles for validation messages if you add them later */
+/*
+.error-message {
+  color: red; 
+  font-size: 0.8em;
+  margin-top: -5px;
+  margin-bottom: 5px;
+}
+*/

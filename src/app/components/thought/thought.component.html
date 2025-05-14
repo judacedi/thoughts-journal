@@ -1,7 +1,11 @@
-<div class="thought">
-  <button class="edit-btn" (click)="onEditClick()">Edit</button>
-  <button class="remove-btn" (click)="remove()">&times;</button>
-  <h3>{{ title }}</h3>
-  <p>{{ content }}</p>
-  <small>{{ date }}</small>
+<div class="thought-item">
+  <div class="thought-header">
+    <h3 class="thought-title">{{ title }}</h3>
+    <small class="thought-date">{{ date | date:'short' }}</small>
+  </div>
+  <p class="thought-content">{{ content }}</p>
+  <div class="thought-actions">
+    <button class="remove-btn" (click)="remove()">Remove</button>
+    <button class="edit-btn" (click)="onEditClick()">Edit</button>
+  </div>
 </div>
