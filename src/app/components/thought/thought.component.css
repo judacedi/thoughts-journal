@@ -34,7 +34,7 @@
 .thought-content {
   font-size: 1em;
   line-height: 1.4;
-  color: var(--gbc-text);
+  color: var(--gbc-text-light);
   white-space: pre-wrap; /* Preserve line breaks from textarea */
   word-wrap: break-word; /* Ensure long words break */
   margin-bottom: 10px;
@@ -66,3 +66,27 @@
 }
 
 /* Hover/active for edit-btn are already handled by global button styles, but can be overridden if needed */
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 480px) {
+  .thought-header {
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    gap: 4px; /* Add a small gap if they wrap */
+  }
+
+  .thought-title {
+    font-size: 1em; /* Slightly reduce title size if needed */
+    flex-basis: 100%; /* Make title take full width if date wraps */
+  }
+
+  .thought-date {
+    font-size: 0.50em; /* Further reduce date font size */
+    flex-basis: 100%; /* Allow date to take full width on its own line */
+    text-align: right; /* Align date to the right if it's on its own line */
+  }
+
+  .thought-actions button {
+    padding: 5px 8px;
+    font-size: 0.8em;
+  }
+}

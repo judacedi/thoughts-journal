@@ -5,7 +5,9 @@
   </div>
   <p class="thought-content">{{ content }}</p>
   <div class="thought-actions">
-    <button class="remove-btn" (click)="remove()">Remove</button>
-    <button class="edit-btn" (click)="onEditClick()">Edit</button>
+    <button class="remove-btn" (click)="remove()" aria-label="Delete Thought">
+      <img src="assets/icons/smallGenericTrashCan.svg" alt="Remove Thought" width="32" height="32">
+    </button>
+    <button class="edit-btn" (click)="onEditClick()" aria-label="Edit Thought">Edit</button>
   </div>
 </div>

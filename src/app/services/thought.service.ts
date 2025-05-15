@@ -36,7 +36,7 @@ export class ThoughtService {
       id: uuidv4(),
       title: newThoughtData.title,
       content: newThoughtData.content,
-      date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+      date: new Date().toISOString(), // Store full ISO string
     };
     this.thoughtsSignal.update((prev) => [thought, ...prev]);
   }
