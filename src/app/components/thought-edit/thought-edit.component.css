@@ -29,14 +29,3 @@ textarea {
 /* .cancel-btn and .save-btn can be used for specific overrides if needed,
    but the global button style should be sufficient for now. */
 
-.cancel-btn {
-  background-color: var(--gbc-neutral);
-  color: var(--gbc-bg-input); /* Dark text for contrast */
-  border-color: var(--gbc-border);
-}
-
-.save-btn {
-  background-color: var(--gbc-accent); /* Standard accent for save */
-  color: var(--gbc-bg-input);
-  border-color: var(--gbc-border);
-}

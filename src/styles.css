@@ -11,6 +11,7 @@
   --gbc-window-border: #000000; /* Black for main container borders */
   --gbc-pastel-red: #FF8A80; /* Pastel red for destructive actions */
   --gbc-neutral: #584A58; /* Dark purple-grey for neutral actions */
+  --gbc-pastel-blue: #aec6cf; /* Pastel blue for save button */
 
   --font-pixel: 'Press Start 2P', cursive;
 }

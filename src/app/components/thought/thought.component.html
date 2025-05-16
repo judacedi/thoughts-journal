@@ -1,11 +1,11 @@
 <div class="thought-item">
   <div class="thought-header">
-    <h3 class="thought-title">{{ title }}</h3>
-    <small class="thought-date">{{ date | date:'short' }}</small>
+    <h3 class="thought-title">{{ thought.title }}</h3>
+    <small class="thought-date">{{ displayDate }}</small>
   </div>
-  <p class="thought-content">{{ content }}</p>
+  <p class="thought-content">{{ thought.content }}</p>
   <div class="thought-actions">
-    <button class="remove-btn" (click)="remove()" aria-label="Delete Thought">
+    <button class="remove-btn" (click)="onRemoveClick()" aria-label="Delete Thought">
       <img src="assets/icons/smallGenericTrashCan.svg" alt="Remove Thought" width="32" height="32">
     </button>
     <button class="edit-btn" (click)="onEditClick()" aria-label="Edit Thought">Edit</button>

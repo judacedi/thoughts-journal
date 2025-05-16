@@ -1,67 +1,86 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ThoughtService } from '../../services/thought.service';
-import { Thought } from '../../services/thought.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Thought, ThoughtService, Timestamp } from '../../services/thought.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ThoughtFormComponent } from '../thought-form/thought-form.component';
+import { switchMap, catchError, tap, filter } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-thought-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ThoughtFormComponent],
   templateUrl: './thought-edit.component.html',
   styleUrls: ['./thought-edit.component.css']
 })
-export class ThoughtEditComponent implements OnInit, OnDestroy {
+export class ThoughtEditComponent implements OnInit {
 
-    editForm: FormGroup;
-    currentThoughtId!: string ;
-    originalThought?: Thought;
-    private routeSub!: Subscription;
+  isLoading: WritableSignal<boolean> = signal(true);
+  error: WritableSignal<string | null> = signal(null);
+  currentThought: WritableSignal<Thought | null> = signal(null);
+  currentThoughtId: string | null = null;
 
-  constructor(private fb: FormBuilder, private thoughtService: ThoughtService, private route: ActivatedRoute, private router: Router) {
-    this.editForm = this.fb.group({
-      title: ['', Validators.required],
-      content: ['', Validators.required]
-    });
-  }
+  private route = inject(ActivatedRoute);
+  public router = inject(Router); // Made public for template access
+  private thoughtService = inject(ThoughtService);
 
   ngOnInit(): void {
-    this.routeSub = this.route.params.subscribe(params => {
-      this.currentThoughtId = params['id'];
-      this.originalThought = this.thoughtService.getThoughtById(this.currentThoughtId);
-    });
-    if (this.originalThought) {
-      this.editForm.patchValue({
-        title: this.originalThought.title,
-        content: this.originalThought.content
-      });
-    } else {
-      console.error('Thought not found!');
-      this.router.navigate(['/']);
-    }
+    this.route.paramMap.pipe(
+      tap(() => {
+        this.isLoading.set(true);
+        this.error.set(null);
+        this.currentThought.set(null);
+      }),
+      switchMap(params => {
+        const id = params.get('id');
+        if (!id) {
+          this.error.set('No thought ID provided for editing.');
+          this.isLoading.set(false);
+          return EMPTY;
+        }
+        this.currentThoughtId = id;
+        return this.thoughtService.getThoughtById(id).pipe(
+          catchError(err => {
+            console.error('Error fetching thought:', err);
+            this.error.set(`Error loading thought: ${err.message || 'Unknown error'}`);
+            this.isLoading.set(false);
+            return EMPTY;
+          })
+        );
+      }),
+      tap(thought => {
+        if (thought) {
+          const processedThought = {
+            ...thought,
+            date: thought.date instanceof Timestamp ? thought.date.toDate() : thought.date
+          } as Thought;
+          this.currentThought.set(processedThought);
+        } else {
+          this.error.set('Thought not found.');
+        }
+        this.isLoading.set(false);
+      })
+    ).subscribe();
   }
 
-  saveThought() {
-    if (this.editForm.valid && this.originalThought) {
-      this.thoughtService.updateThought({
-        id: this.currentThoughtId,
-        title: this.editForm.value.title,
-        content: this.editForm.value.content,
-        date: this.originalThought.date
-      });
-      this.router.navigate(['/']);
-    }
+  /**
+   * Handles the saveSuccess event from ThoughtFormComponent.
+   * Navigates away after ThoughtFormComponent successfully saves the thought.
+   */
+  handleSaveSuccess(): void {
+    // The actual save logic is now within ThoughtFormComponent.
+    // This component just needs to react to the successful save.
+    console.log('Save success reported by ThoughtFormComponent, navigating...');
+    this.router.navigate(['/']); // Navigate to home or thought list on success
+    // isLoading and error signals here primarily relate to fetching the thought for editing.
+    // The loading state during the save operation itself is managed within ThoughtFormComponent.
   }
 
-  cancelEdit() {
-    this.router.navigate(['/']);
-  }
-
-  ngOnDestroy(): void {
-    if (this.routeSub) {
-      this.routeSub.unsubscribe();
-    }
+  /**
+   * Handles the cancel event from ThoughtFormComponent.
+   */
+  handleCancel(): void {
+    this.router.navigate(['/']); // Navigate back to the list or home page
   }
 }
