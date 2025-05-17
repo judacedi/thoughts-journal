@@ -1,7 +1,6 @@
 <app-thought 
     *ngFor="let thought of thoughts()"
-    [title]="thought.title"
-    [content]="thought.content"
-    [date]="thought.date"
-    [id]="thought.id"
+    [thought]="thought"
+    (removeThought)="onRemoveThought($event)"
+    (editRequest)="onEditThought($event)"
   ></app-thought>

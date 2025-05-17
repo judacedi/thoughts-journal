@@ -1,0 +1,28 @@
+<div class="thought-edit-container">
+  <ng-container *ngIf="isLoading(); else contentLoaded">
+    <p class="loading-message">Loading thought for editing...</p>
+  </ng-container>
+
+  <ng-template #contentLoaded>
+    <ng-container *ngIf="error(); else formDisplay">
+      <p class="error-message">Error: {{ error() }}</p>
+      <button (click)="router.navigate(['/'])">Back to Thoughts</button>
+    </ng-container>
+
+    <ng-template #formDisplay>
+      <ng-container *ngIf="currentThought(); else noThought">
+        <h2>Edit Thought</h2>
+        <app-thought-form 
+          [thoughtToEdit]="currentThought()" 
+          (saveSuccess)="handleSaveSuccess()"
+          (cancel)="handleCancel()">
+        </app-thought-form>
+      </ng-container>
+      <ng-template #noThought>
+        <!-- This case should ideally be handled by the error signal if thought is not found after loading -->
+        <p>No thought data available to edit. This might be an unexpected state.</p>
+         <button (click)="router.navigate(['/'])">Back to Thoughts</button>
+      </ng-template>
+    </ng-template>
+  </ng-template>
+</div>

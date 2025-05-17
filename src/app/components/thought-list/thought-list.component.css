@@ -1,0 +1,14 @@
+.thought-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between each thought item */
+}
+
+.empty-message {
+  text-align: center;
+  padding: 20px;
+  color: var(--gbc-text);
+  font-style: italic; /* Optional: make it italic */
+  border: 2px dashed var(--gbc-border); /* A dashed border for empty state */
+  background-color: var(--gbc-bg-input); /* Slightly different background */
+}

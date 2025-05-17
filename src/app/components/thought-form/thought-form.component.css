@@ -1,15 +1,57 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-  input, textarea {
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
-  button {
-    align-self: flex-end;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Spacing between form elements */
+  margin-bottom: 20px; /* Space below the form */
+  padding: 10px;
+  border: 2px solid var(--gbc-border);
+  background-color: var(--gbc-bg-main); /* Or a slightly different shade if desired */
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-start; /* Align items to the start, .save-btn will push itself right */
+  align-items: center; /* Vertically align items if they have different heights */
+  margin-top: 15px;
+  gap: 10px; /* Maintains gap if they were ever to be side-by-side due to other items */
+}
+
+input[type="text"],
+textarea {
+  /* Global styles already apply font, border, bg-color, padding */
+  /* We can add specific widths or heights if needed */
+  width: 100%;
+}
+
+textarea {
+  min-height: 80px; /* Adjust as needed */
+}
+
+button {
+  /* Global styles from styles.css apply font, border, bg-color, padding, cursor */
+  min-width: 120px; /* Ensure button has a decent width */
+  /* align-self: flex-end; Removed as parent .form-actions now controls alignment */
+}
+
+.cancel-btn {
+  background-color: var(--gbc-neutral);
+  color: var(--gbc-bg-input); /* Dark text for contrast */
+  border-color: var(--gbc-border);
+}
+
+.save-btn {
+  background-color: var(--gbc-pastel-blue);
+  color: var(--gbc-text); /* Ensure good contrast with pastel blue */
+  border-color: var(--gbc-border);
+  margin-left: auto; /* Pushes this button to the right of the flex container */
+}
+
+/* Styles for validation messages if you add them later */
+/*
+.error-message {
+  color: red; 
+  font-size: 0.8em;
+  margin-top: -5px;
+  margin-bottom: 5px;
+}
+*/

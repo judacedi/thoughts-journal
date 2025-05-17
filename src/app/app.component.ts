@@ -1,20 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ThoughtComponent } from './components/thought/thought.component';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ThoughtFormComponent } from './components/thought-form/thought-form.component';
-import { Thought, ThoughtService } from './services/thought.service';
-import { ThoughtListComponent } from "./components/thought-list/thought-list.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, ThoughtFormComponent, ThoughtListComponent],
+  imports: [CommonModule, RouterOutlet], // CommonModule might also be removable if not using its directives like *ngIf/*ngFor directly in app.component.html
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent{
+export class AppComponent {
 
   constructor() {}
-
 
 }

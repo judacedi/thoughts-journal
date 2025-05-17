@@ -1,22 +1,60 @@
-import { Component, Input  } from '@angular/core';
-import { ThoughtService } from '../../services/thought.service';
+import { Component, Input, Output, EventEmitter, computed } from '@angular/core';
+import { Thought, Timestamp } from '../../services/thought.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-thought',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule
+  ],
   templateUrl: './thought.component.html',
-  styleUrl: './thought.component.css'
+  styleUrls: ['./thought.component.css']
 })
 export class ThoughtComponent {
-  @Input() title = 'Untitled';
-  @Input() content = '';
-  @Input() date = new Date().toLocaleDateString();
-  @Input() id!: string;
+  @Input({ required: true }) thought!: Thought;
 
-  constructor(private thoughtService: ThoughtService) {}
+  @Output() removeThought = new EventEmitter<string>();
+  @Output() editRequest = new EventEmitter<Thought>();
 
-  remove() {
-    this.thoughtService.removeThought(this.id);
+  constructor(private router: Router) {}
+
+  /**
+   * Gets the displayable date string from the thought's date.
+   * Converts Firestore Timestamp or Date object to a locale date string.
+   */
+  get displayDate(): Date | string {
+    const date = this.thought.date;
+    if (date && typeof (date as any).toDate === 'function') {
+      // Firestore Timestamp object
+      return (date as Timestamp).toDate();
+    } else if (date instanceof Date) {
+      // Standard JavaScript Date object
+      return date;
+    }
+    // Fallback for unexpected date types, or if date is already a string (legacy)
+    return date ? (date as Timestamp).toDate() : 'No date';
+  }
+
+  /**
+   * Emits an event with the thought's ID when the remove button is clicked,
+   * delegating the deletion logic to the parent component.
+   */
+  onRemoveClick(): void {
+    if (this.thought && this.thought.id) {
+      this.removeThought.emit(this.thought.id);
+    } else {
+      console.error('Cannot remove thought: ID is missing.');
+    }
+  }
+
+  onEditClick() {
+    /**
+   * Emits an event with the current thought object when the edit button is clicked,
+   * signaling the parent component to initiate the editing process.
+   */
+    this.editRequest.emit(this.thought);
   }
 
 }

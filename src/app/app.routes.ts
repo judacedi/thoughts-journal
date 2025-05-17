@@ -1,13 +1,17 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
+import { HomeComponent } from './components/home/home.component';
+import { ThoughtEditComponent } from './components/thought-edit/thought-edit.component';
 
 export const routes: Routes = [
     {
-        path: '',
-        loadComponent: () => import('./app.component').then(m => m.AppComponent),
+        path: '', component: HomeComponent
     },
+    // {
+    //     path: '**',
+    //     redirectTo: '',
+    // },
     {
-        path: '**',
-        redirectTo: '',
-    }
+        path: 'edit/:id',
+        component: ThoughtEditComponent
+    },
 ];

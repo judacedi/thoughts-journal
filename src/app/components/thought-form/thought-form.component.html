@@ -1,5 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="submitThought()" class="form">
     <input type="text" formControlName="title" placeholder="Title" />
     <textarea formControlName="content" placeholder="What's on your mind?"></textarea>
-    <button type="submit" [disabled]="form.invalid">Add Thought</button>
+    <div class="form-actions">
+      <button type="button" (click)="onCancel()" *ngIf="isEditMode()" class="cancel-btn">Cancel</button>
+      <button type="submit" [disabled]="form.invalid" class="save-btn">{{ isEditMode() ? 'Update Thought' : 'Add Thought' }}</button>
+    </div>
 </form>
