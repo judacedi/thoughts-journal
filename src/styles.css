@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --gbc-bg-main: #a2c180; /* GBC greenish-grey background  c4cfa1*/
+  --gbc-bg-main: #c4cfa1; /* GBC greenish-grey background  c4cfa1*/
   --gbc-bg-input: #e0e0e0; /* Lighter grey for input fields */
   --gbc-text: #343434;    /* Dark grey text */
   --gbc-text-light: #7a7a7a;    /* Light grey text */
-  --gbc-text-green: #41a035;    /* Light grey text */
+  --gbc-text-green: #41a035;    /* Green text */
   --gbc-border: #584A58;  /* Dark purple-grey for borders */
   --gbc-accent: #70A09D;  /* Muted teal/blue for buttons */
   --gbc-window-border: #000000; /* Black for main container borders */
