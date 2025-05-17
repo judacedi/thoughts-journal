@@ -1,7 +1,7 @@
 <div class="thought-item">
   <div class="thought-header">
     <h3 class="thought-title">{{ thought.title }}</h3>
-    <small class="thought-date">{{ displayDate }}</small>
+    <small class="thought-date">{{ displayDate | date: 'short' }}</small>
   </div>
   <p class="thought-content">{{ thought.content }}</p>
   <div class="thought-actions">

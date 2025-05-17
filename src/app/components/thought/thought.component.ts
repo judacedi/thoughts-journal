@@ -24,17 +24,17 @@ export class ThoughtComponent {
    * Gets the displayable date string from the thought's date.
    * Converts Firestore Timestamp or Date object to a locale date string.
    */
-  get displayDate(): string {
+  get displayDate(): Date | string {
     const date = this.thought.date;
     if (date && typeof (date as any).toDate === 'function') {
       // Firestore Timestamp object
-      return (date as Timestamp).toDate().toLocaleDateString();
+      return (date as Timestamp).toDate();
     } else if (date instanceof Date) {
       // Standard JavaScript Date object
-      return date.toLocaleDateString();
+      return date;
     }
     // Fallback for unexpected date types, or if date is already a string (legacy)
-    return date ? String(date) : 'No date';
+    return date ? (date as Timestamp).toDate() : 'No date';
   }
 
   /**
