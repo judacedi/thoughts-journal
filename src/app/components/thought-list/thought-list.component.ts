@@ -15,7 +15,7 @@ import { ThoughtComponent } from '../thought/thought.component'; // Assuming thi
 })
 export class ThoughtListComponent {
   private thoughtService = inject(ThoughtService);
-  public thoughts: Signal<Thought[]> = toSignal(this.thoughtService.getThoughts(), { initialValue: [] });
+  public thoughts: Signal<Thought[] | undefined> = toSignal(this.thoughtService.getThoughts(), { initialValue: undefined });
 
   constructor(private router: Router) {}
 

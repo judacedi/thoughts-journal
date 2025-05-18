@@ -1,6 +1,15 @@
-<app-thought 
+<ng-container *ngIf="thoughts() != undefined && thoughts()!.length > 0; else loader">
+  <app-thought 
     *ngFor="let thought of thoughts()"
     [thought]="thought"
     (removeThought)="onRemoveThought($event)"
     (editRequest)="onEditThought($event)"
   ></app-thought>
+</ng-container>
+<ng-template #loader>
+  <div class="loader-container">
+    <img src="assets/black_mage.gif" alt="Black Mage" width="64" height="64">
+    <p>{{ thoughts() != undefined ? 'No thoughts found.' : 'Loading thoughts...' }}</p>
+    <img src="assets/black_mage.gif" alt="Black Mage" width="64" height="64">
+  </div>
+</ng-template>

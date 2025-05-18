@@ -12,3 +12,14 @@
   border: 2px dashed var(--gbc-border); /* A dashed border for empty state */
   background-color: var(--gbc-bg-input); /* Slightly different background */
 }
+
+.loader-container { 
+  
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+  min-height: 80px;
+}
