@@ -23,3 +23,69 @@ h1 {
 
 /* Ensure router-outlet content also respects theming if needed */
 /* router-outlet + * { ... } */
+
+/* New Header Styles */
+.app-header {
+  background-color: var(--gbc-bg-dark, #222); /* Fallback if var not defined */
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 4px solid var(--gbc-window-border);
+  margin-bottom: 20px; /* Space between header and main container */
+}
+
+.app-header h1 {
+  margin: 0; /* Remove default h1 margin */
+  font-size: 1.5em; /* Keep consistent with container h1 or adjust */
+  color: var(--gbc-text-header, var(--gbc-text));
+}
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between nav items */
+}
+
+.nav-link {
+  color: var(--gbc-accent, #0f0); /* Use accent color for links */
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.nav-link:hover {
+  color: var(--gbc-text-green, #3f3);
+}
+
+.user-email {
+  color: var(--gbc-text-light, #ccc);
+  font-size: 0.9em;
+  margin-right: 10px; /* Space before logout button */
+}
+
+.logout-button {
+  /* Inherits .nav-link styles, can add more specific ones if needed */
+  /* For example, to make it look more like a button: */
+  padding: 5px 10px;
+  border: 2px solid var(--gbc-border);
+  background-color: var(--gbc-button-bg, var(--gbc-accent));
+  color: var(--gbc-button-text, var(--gbc-bg-main));
+  text-decoration: none;
+}
+
+/* Responsive considerations: maybe stack nav items on small screens */
+@media (max-width: 600px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .app-nav {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: space-around; /* Or flex-start, etc. */
+  }
+  .app-header h1 {
+    margin-bottom: 10px;
+  }
+}

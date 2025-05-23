@@ -1,0 +1,36 @@
+<div class="login-container retro-border-box">
+  <h2>Login</h2>
+
+  <form (ngSubmit)="onEmailPasswordLogin()" [formGroup]="loginForm" class="login-form">
+    <div class="form-field">
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email" class="retro-input" required>
+      <!-- Basic error display (can be enhanced) -->
+      <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="error-message">
+        <small *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</small>
+        <small *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format.</small>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="password">Password:</label>
+      <input type="password" id="password" formControlName="password" class="retro-input" required>
+      <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="error-message">
+        <small *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</small>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid" class="retro-button primary-button">Login</button>
+  </form>
+
+  <div class="separator">OR</div>
+
+  <button (click)="onGoogleLogin()" class="retro-button google-button">
+    <img src="assets/icons/google-logo.svg" alt="Google logo" class="google-logo-img">
+    Sign in with Google
+  </button>
+
+  <div class="signup-link">
+    <p>Don't have an account? <a (click)="navigateToSignup()" class="retro-link">Sign Up</a></p>
+  </div>
+</div>
