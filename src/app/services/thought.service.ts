@@ -11,9 +11,12 @@ import {
   updateDoc,
   orderBy, // For ordering
   query, // For creating queries
-  Timestamp // Import Timestamp
+  Timestamp, // Import Timestamp
+  where // For filtering
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { AuthService } from './auth.service'; // Import AuthService
 export { Timestamp }; // Re-export Timestamp
 
 export interface Thought {
@@ -21,6 +24,7 @@ export interface Thought {
   title: string;
   content: string;
   date:  Date | Timestamp;
+  userId: string; // Added to associate thought with a user
 }
 
 @Injectable({
@@ -30,24 +34,46 @@ export class ThoughtService {
 
   private firestore: Firestore = inject(Firestore);
   private thoughtsCollection = collection(this.firestore, 'thoughts');
+  private authService: AuthService = inject(AuthService); // Inject AuthService
 
   constructor() { }
 
   // Create a new thought
   addThought(thoughtContent: { title: string; content: string }): Promise<any> {
+    const currentUser = this.authService.currentUserSignal();
+    if (!currentUser || !currentUser.uid) {
+      console.error('ThoughtService: User not logged in or UID missing. Cannot add thought.');
+      return Promise.reject('User not logged in or UID missing.');
+    }
+
     const newThought: Omit<Thought, 'id'> = {
       title: thoughtContent.title,
       content: thoughtContent.content,
-      date: Timestamp.fromDate(new Date()) // Use Firebase Timestamp
+      date: Timestamp.fromDate(new Date()), 
+      userId: currentUser.uid // Use uid from AuthService
     };
     return addDoc(this.thoughtsCollection, newThought);
   }
 
   // Get all thoughts (as an Observable for real-time updates)
   getThoughts(): Observable<Thought[]> {
-    // Optionally, order by date
-    const q = query(this.thoughtsCollection, orderBy('date', 'desc'));
-    return collectionData(q, { idField: 'id' }) as Observable<Thought[]>; //This MFer is returning an Observable of Thought[] in effing real-time after every change, Jesus Christ Be Praised!
+    return this.authService.user$.pipe(
+      switchMap(user => {
+        if (user && user.uid) {
+          console.log(`ThoughtService: Fetching thoughts for user ${user.uid}`);
+          const q = query(
+            this.thoughtsCollection, 
+            where('userId', '==', user.uid),
+            orderBy('date', 'desc')
+          );
+          return collectionData(q, { idField: 'id' }) as Observable<Thought[]>; //This MFer is returning an Observable of Thought[] in effing real-time after every change, Jesus Christ Be Praised!
+        } else {
+          console.log('ThoughtService: No user logged in, returning empty thoughts array.');
+          return of([]); // Return an observable of an empty array if no user
+        }
+      }),
+      tap(thoughts => console.log('Thoughts after filtering by user:', thoughts)) // For debugging
+    );
   }
 
   // Get a single thought by ID (as an Observable)
@@ -77,77 +103,4 @@ export class ThoughtService {
     return deleteDoc(thoughtDocRef);
   }
 
-  
-  // private STORAGE_KEY = 'thoughts';
-
-  // private initialThoughts = this.getThoughts();
-  // private thoughtsSignal = signal<Thought[]>(this.initialThoughts)
-
-  // readonly thoughts = computed(() => this.thoughtsSignal());
-
-  // constructor() {
-  //   effect(() => {
-  //     try {
-  //       const current = this.thoughtsSignal();
-  //       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(current));
-  //     } catch (e) {
-  //       console.error("Error saving thoughts to localStorage", e);
-  //     }
-  //   });
-  // }
-
-  // // Expects only title and content, generates id and date internally
-  // addThought(newThoughtData: { title: string; content: string }) {
-  //   const thought: Thought = {
-  //     id: uuidv4(),
-  //     title: newThoughtData.title,
-  //     content: newThoughtData.content,
-  //     date: new Date().toISOString(), // Store full ISO string
-  //   };
-  //   this.thoughtsSignal.update((prev) => [thought, ...prev]);
-  // }
-
-  // removeThought(id: string) {
-  //   if (window.confirm("Are you sure you want to delete this thought?")) {
-  //     this.thoughtsSignal.update(thoughts =>
-  //       thoughts.filter(thought => thought.id !== id) 
-  //     );
-  //     console.log(`The item with the id ${id} has been removed`);
-  //   }
-  // }
-
-  // updateThought(updatedThought: Thought) {
-  //   this.thoughtsSignal.update(thoughts =>
-  //     thoughts.map(thought =>
-  //       thought.id === updatedThought.id ? updatedThought : thought
-  //     )
-  //   );
-  //   console.log(`The item with the id ${updatedThought.id} has been updated`);
-  // }
-
-  // clearThoughts() {
-  //   if (window.confirm("Are you sure you want to delete ALL thoughts? This cannot be undone.")) {
-  //     this.thoughtsSignal.set([]);
-  //     console.log("All thoughts have been cleared.");
-  //   }
-  // }
-
-  // getThoughtById(id: string): Thought | undefined {
-  //   return this.thoughtsSignal().find(thought => thought.id === id);
-  // }
-
-  // private getThoughts(): Thought[] { 
-  //   const raw = localStorage.getItem(this.STORAGE_KEY);
-  //   if (raw) {
-  //     try {
-  //       return JSON.parse(raw);
-  //     } catch (e) {
-  //       console.error("Error parsing thoughts from localStorage", e);
-  //       // Optionally, clear the corrupted item:
-  //       // localStorage.removeItem(this.STORAGE_KEY);
-  //       return [];
-  //     }
-  //   }
-  //   return [];
-  // }
 }

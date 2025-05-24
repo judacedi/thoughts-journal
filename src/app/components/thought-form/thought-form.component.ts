@@ -66,7 +66,8 @@ export class ThoughtFormComponent implements OnChanges {
           id: this.thoughtToEdit.id,
           title,
           content,
-          date: this.thoughtToEdit.date, // Preserve original date or update if form allows
+          date: this.thoughtToEdit.date, // Preserve original date
+          userId: this.thoughtToEdit.userId // Ensure userId is included
         };
         // If you allow date editing in the form, you might want to update 'date' as well.
         // For now, let's assume we're preserving the original creation date upon edit or setting a new 'lastModifiedDate'.
@@ -75,12 +76,12 @@ export class ThoughtFormComponent implements OnChanges {
         console.log('Thought updated successfully');
       } else {
         // Add new thought
-        const newThought: Omit<Thought, 'id'> = {
+        // Date and userId are now handled by the thoughtService
+        const newThoughtPayload = {
           title,
-          content,
-          date: currentDateTime, 
+          content
         };
-        await this.thoughtService.addThought(newThought);
+        await this.thoughtService.addThought(newThoughtPayload);
         console.log('Thought added successfully');
       }
       this.form.reset();

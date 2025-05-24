@@ -32,6 +32,7 @@ export class AuthService implements OnDestroy {
     this.userSubscription = this.user$.subscribe(fireBaseUser => {
       if (fireBaseUser) {
         const appUser: UserInterface = {
+          uid: fireBaseUser.uid,
           email: fireBaseUser.email!,
           username: fireBaseUser.displayName || fireBaseUser.email!
         };
