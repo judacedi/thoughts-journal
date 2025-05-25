@@ -45,6 +45,11 @@ export class SignupComponent {
           this.router.navigate(['/']);
         },
         error: (err) => {
+          if (err.message.includes('auth/invalid-email')) {
+            window.alert('Invalid email');
+          } else {
+            window.alert(err.message);
+          }
           console.error('SignupComponent: Signup failed', err);
         }
       });

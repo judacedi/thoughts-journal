@@ -11,7 +11,9 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   updateProfile,
-  user
+  user,
+  signInWithRedirect,
+  getRedirectResult
 } from '@angular/fire/auth';
 import { Observable, from, EMPTY, of, Subscription } from 'rxjs';
 import { catchError, tap, map, switchMap, filter, take } from 'rxjs/operators';
@@ -43,6 +45,9 @@ export class AuthService implements OnDestroy {
         console.log('AuthService: currentUserSignal set to null.');
       }
     });
+    console.log('AuthService constructor: Initializing...');
+    // Handle the redirect result from Google Sign-In
+    this.handleRedirectResult().subscribe();
   }
 
   ngOnDestroy(): void {
@@ -68,9 +73,28 @@ export class AuthService implements OnDestroy {
   }
   
   loginWithGoogle(): Observable<UserCredential | void> {
-    const promise = signInWithPopup(this.firebaseAuth, new GoogleAuthProvider());
-
+    const promise = signInWithRedirect(this.firebaseAuth, new GoogleAuthProvider());
+    
     return from(promise)
+  }
+
+  handleRedirectResult(): Observable<UserCredential | null> {
+    console.log('AuthService: handleRedirectResult FUNCTION CALLED');
+    return from(getRedirectResult(this.firebaseAuth))
+      .pipe(
+        tap((result) => {
+          if (result) {
+            console.log('AuthService: Google Sign-In via redirect successful.', result.user);
+            this.router.navigate(['/']);
+          } else {
+            console.log('AuthService: No redirect result on load.');
+          }
+        }),
+        catchError((error) => {
+          console.error('AuthService: Error processing redirect result:', error);
+          return EMPTY;
+        })
+      );
   }
 
   logout(): Observable<void> {

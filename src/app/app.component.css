@@ -33,12 +33,21 @@ h1 {
   align-items: center;
   border-bottom: 4px solid var(--gbc-window-border);
   margin-bottom: 20px; /* Space between header and main container */
+  max-width: 600px; /* Constrain width like .container */
+  margin-left: auto; /* Center the header block */
+  margin-right: auto; /* Center the header block */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .app-header h1 {
   margin: 0; /* Remove default h1 margin */
   font-size: 1.5em; /* Keep consistent with container h1 or adjust */
-  color: var(--gbc-text-header, var(--gbc-text));
+  color: var(--gbc-bg-main); /* Ensure this contrasts with --gbc-bg-dark */
+  text-shadow: 2px 2px var(--gbc-border);
+}
+
+.app-header h1 span {
+  display: block;
 }
 
 .app-nav {

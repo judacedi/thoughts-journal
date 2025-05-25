@@ -2,11 +2,12 @@
   <h2>Sign Up</h2>
 
   <form (ngSubmit)="onSignup()" [formGroup]="signupForm" class="signup-form">
+
     <div class="form-field">
       <label for="username">Player Name:</label>
       <input type="username" id="username" formControlName="username" class="retro-input" required>
       <div *ngIf="signupForm.get('username')?.invalid && (signupForm.get('username')?.dirty || signupForm.get('username')?.touched)" class="error-message">
-        <small *ngIf="signupForm.get('username')?.errors?.['username']">Player Name is required.</small>
+        <small *ngIf="signupForm.get('username')?.errors?.['required']">Player Name is required.</small>
       </div>
     </div>
     

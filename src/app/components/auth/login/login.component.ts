@@ -36,6 +36,11 @@ export class LoginComponent {
           this.router.navigate(['/']);
         },
         error: (err) => {
+          if (err.message.includes('auth/invalid-credential')) {
+            window.alert('Invalid email or password');
+          } else {
+            window.alert(err.message);
+          }
           console.error('LoginComponent: Email/Password login failed', err);
         }
       });
@@ -51,6 +56,11 @@ export class LoginComponent {
         console.log('LoginComponent: Google login successful');
       },
       error: (err) => {
+        if (err.message.includes('auth/invalid-credential')) {
+          window.alert('Invalid email or password');
+        } else {
+          window.alert(err.message);
+        }
         console.error('LoginComponent: Google login failed', err);
       }
     });
